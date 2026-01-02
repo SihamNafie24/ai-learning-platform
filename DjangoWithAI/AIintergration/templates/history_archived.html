@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>PDF-to-LLM: Archives</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 2em;
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th,
+		td {
+			border: 1px solid #aaa;
+			padding: .5em;
+		}
+
+		th {
+			background: #f3f3f3;
+		}
+
+		.result-html {
+			background: #fafafa;
+			max-width: 500px;
+			overflow-x: auto;
+		}
+
+		.prompt {
+			white-space: pre-wrap;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Archived PDF-to-LLM History</h1>
+	<a href="/">&lt; Back to Active History</a>
+	<hr>
+	{% if history %}
+	<table>
+		<thead>
+			<tr>
+				<th>PDF</th>
+				<th>Prompt</th>
+				<th>Result</th>
+				<th>Date/Time</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in history %}
+			<tr>
+				<td><a href="{{ item.pdf_file.url }}" target="_blank">{{ item.pdf_file.name|cut:'uploads/' }}</a></td>
+				<td class="prompt">{{ item.prompt }}</td>
+				<td class="result-html">{{ item.result_html|safe }}</td>
+				<td>{{ item.created_at|date:"Y-m-d H:i" }}</td>
+				<td>
+					<form action="/api/delete/{{ item.id }}/" method="post" style="display:inline">{% csrf_token
+						%}<button type="submit">Delete</button></form>
+					<form action="/api/restore/{{ item.id }}/" method="post" style="display:inline">{% csrf_token
+						%}<button type="submit">Restore</button></form>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>No archived uploads found. <a href="/">Return to main history</a>.</p>
+	{% endif %}
+</body>
+
+</html>

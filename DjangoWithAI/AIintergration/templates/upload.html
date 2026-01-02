@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PDF to LLM HTML</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 2em;
+		}
+
+		.result {
+			margin-top: 2em;
+			border: 1px solid #ccc;
+			padding: 1em;
+			background: #fafafe;
+		}
+	</style>
+</head>
+
+<body>
+	<h2>Upload PDF, enter prompt</h2>
+	<form id="pdf-form" enctype="multipart/form-data">
+		<input type="file" name="pdf" accept="application/pdf" required><br><br>
+		<textarea name="prompt" rows="4" cols="50" placeholder="Type your prompt..." required></textarea><br><br>
+		<button type="submit">Send to LLM</button>
+	</form>
+	<div class="result" id="result"></div>
+	<script>
+		document.getElementById('pdf-form').onsubmit = async (e) => {
+			e.preventDefault();
+			const formData = new FormData(e.target);
+			const resDiv = document.getElementById('result');
+			resDiv.innerHTML = 'Processing...';
+			try {
+				let resp = await fetch('/api/pdf2llm/', {
+					method: 'POST',
+					body: formData
+				});
+				let data = await resp.json();
+				if (data.result) {
+					resDiv.innerHTML = data.result;
+				} else if (data.error) {
+					resDiv.innerHTML = '<b>Error:</b> ' + data.error;
+				} else {
+					resDiv.innerHTML = '<b>Unknown error</b>';
+				}
+			} catch (err) {
+				resDiv.innerHTML = '<b>Error:</b> ' + err;
+			}
+		};
+	</script>
+</body>
+
+</html>
