@@ -15,7 +15,7 @@ It showcases real-world full-stack development, API design, authentication, data
 - Responsive modern UI
 > ⚠️ AI generation falls back to mock data when API quota is exceeded.
 
-## 🛠 Tech Stack & Tools
+##  Tech Stack & Tools
 
 ### Backend
 - **Django** → https://www.djangoproject.com/
