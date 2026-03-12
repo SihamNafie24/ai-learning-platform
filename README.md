@@ -97,8 +97,5 @@ The frontend should now be running, usually at `http://localhost:3000/`.
 
 ---
 
-## **Notes**
-
-* Make sure the backend server is running before interacting with the frontend.
 
 
